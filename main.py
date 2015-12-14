@@ -30,3 +30,37 @@ train_and_predict.compute_feature_importance()
 # construct graph and save them fo files
 data_viz.load_prepared_data()
 data_viz.construct_bar_plots()
+
+
+
+# check wether different DD have FL in common. Answer is YES !!!
+# conclusion FL alone are not reliable predictors
+
+load_and_reshape.load_Kaggle_files()
+
+df = load_and_reshape.df_train[['DepartmentDescription', 'FinelineNumber']]
+groups_by_DD = df.groupby('DepartmentDescription')
+
+DD_to_FL_set_mapping = {}
+for dd, group in groups_by_DD:
+    DD_to_FL_set_mapping[dd] = set(group['FinelineNumber'].unique().astype(int))
+
+dd_list = pd.Series(load_and_reshape.df_train['DepartmentDescription'].unique()).dropna()
+dd_list.sort(inplace = True)
+nb_unique_DD = dd_list.size
+
+
+found = False
+for dd_1 in dd_list:
+    set_1 = DD_to_FL_set_mapping[dd_1]
+    for dd_2 in dd_list:
+        if dd_list.tolist().index(dd_2) < dd_list.tolist().index(dd_1):
+            set_2 = DD_to_FL_set_mapping[dd_2]
+            intersection = set_1 & set_2
+            if intersection:
+                print('sets of FL associated with {} and {} have these elements in common: {}'.format(dd_1, dd_2, intersection))
+                found = True
+
+if not found:
+    print('no intersection found')
+
