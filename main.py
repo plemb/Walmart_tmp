@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 __author__ = 'plemberger'
 
+# modification
+
 import load_and_reshape
 import train_and_predict
 import data_viz
@@ -14,7 +16,7 @@ df_train, df_test = load_and_reshape.get_train_and_test()
 #load_and_reshape.prepare_data_files_for_DD(df_train, df_test)
 load_and_reshape.prepare_data_files_for_FL(df_train, df_test)
 
-# un commentaire
+# un commentaire qui vient d'être modifié
 
 # train various classifier and make predictions
 train_and_predict.load_prepared_data_DD()
